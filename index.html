@@ -3,15 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>見取り力向上クイズ</title>
+    <title>MiToRi</title>
     <!-- Tailwind CSSを読み込み -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, #f0f9ff 0%, #cbebff 100%);
+            /* よりカラフルなグラデーション背景 */
+            background: linear-gradient(135deg, #FFD700 0%, #FF69B4 50%, #87CEEB 100%); /* ゴールド、ホットピンク、スカイブルー */
             display: flex;
+            flex-direction: column; /* フッターを下に配置するために追加 */
             justify-content: center;
             align-items: center;
             min-height: 100vh;
@@ -22,7 +24,7 @@
         .container {
             background-color: #ffffff;
             border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.2); /* シャドウを強調 */
             padding: 30px;
             max-width: 800px;
             width: 100%;
@@ -30,6 +32,7 @@
             position: relative;
             overflow: hidden;
             animation: fadeIn 0.8s ease-out;
+            margin-bottom: 20px; /* フッターとの間にスペースを確保 */
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
@@ -39,8 +42,8 @@
             margin-bottom: 30px;
             padding: 20px;
             border-radius: 15px;
-            background-color: #f8faff;
-            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05);
+            background-color: #f0f8ff; /* 明るい背景色 */
+            box-shadow: inset 0 3px 6px rgba(0, 0, 0, 0.1); /* シャドウを強調 */
         }
         .question-text {
             font-size: 1.25rem;
@@ -56,9 +59,9 @@
             margin-top: 20px;
         }
         .option-button {
-            background-color: #e0f2fe;
-            color: #007bff;
-            border: 2px solid #a7d9f7;
+            background-color: #e6e6fa; /* ラベンダー色 */
+            color: #4B0082; /* インディゴ色 */
+            border: 2px solid #9370DB; /* ミディアムパープル */
             padding: 15px 20px;
             border-radius: 10px;
             cursor: pointer;
@@ -70,20 +73,21 @@
             align-items: center;
         }
         .option-button:hover {
-            background-color: #cce7ff;
-            border-color: #87c5ed;
+            background-color: #DDA0DD; /* プラム色 */
+            border-color: #8A2BE2; /* ブルーバイオレット */
             transform: translateY(-3px);
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
         }
         .option-button.selected {
-            background-color: #007bff;
+            background-color: #8A2BE2; /* ブルーバイオレット */
             color: #ffffff;
-            border-color: #0056b3;
+            border-color: #4B0082; /* インディゴ色 */
             transform: translateY(-3px);
             box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
         }
         .submit-button {
-            background: linear-gradient(45deg, #6a82fb 0%, #fc5c7d 100%);
+            /* より鮮やかなグラデーション */
+            background: linear-gradient(45deg, #FF4500 0%, #FFD700 100%); /* オレンジレッドからゴールド */
             color: white;
             padding: 15px 30px;
             border-radius: 10px;
@@ -102,7 +106,7 @@
         .result-section {
             margin-top: 40px;
             padding: 30px;
-            background-color: #e6ffee;
+            background-color: #F0FFF0; /* ホットピンクのフィードバック背景 */
             border-radius: 20px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             text-align: left;
@@ -115,7 +119,7 @@
         .result-title {
             font-size: 1.8rem;
             font-weight: 700;
-            color: #28a745;
+            color: #2E8B57; /* シーグリーン */
             margin-bottom: 20px;
             text-align: center;
         }
@@ -127,41 +131,41 @@
         .feedback-item {
             margin-top: 20px;
             padding: 15px;
-            background-color: #fff3cd;
-            border-left: 5px solid #ffc107;
+            background-color: #FFFACD; /* レモンシフォン */
+            border-left: 5px solid #FFD700; /* ゴールド */
             border-radius: 8px;
             font-size: 1rem;
-            color: #6a4f00;
+            color: #8B4513; /* サドルブラウン */
             line-height: 1.5;
         }
         .feedback-item strong {
-            color: #d39e00;
+            color: #DAA520; /* ゴールデンロッド */
         }
         .overall-feedback-item { /* 新しいスタイル */
             margin-top: 20px;
             padding: 15px;
-            background-color: #e0f2fe; /* 明るい青 */
-            border-left: 5px solid #007bff; /* 青 */
+            background-color: #E0FFFF; /* ライトシアン */
+            border-left: 5px solid #00CED1; /* ダークターコイズ */
             border-radius: 8px;
             font-size: 1rem;
-            color: #004085; /* 濃い青 */
+            color: #008B8B; /* ダークシアン */
             line-height: 1.5;
         }
         .overall-feedback-item strong { /* 新しいスタイル */
-            color: #0056b3; /* さらに濃い青 */
+            color: #006D6D; /* 濃いダークシアン */
         }
         .quote-section {
             margin-top: 30px;
             padding: 20px;
-            background-color: #f0f8ff;
+            background-color: #F0F8FF; /* アリスブルー */
             border-radius: 15px;
-            border: 1px solid #cce7ff;
+            border: 1px solid #ADD8E6; /* ライトブルー */
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
         }
         .quote-text {
             font-size: 1.2rem;
             font-style: italic;
-            color: #4a90e2;
+            color: #4682B4; /* スチールブルー */
             margin-bottom: 10px;
             line-height: 1.6;
         }
@@ -184,7 +188,7 @@
         .progress-bar {
             height: 100%;
             width: 0%;
-            background-color: #4CAF50;
+            background-color: #32CD32; /* ライムグリーン */
             border-radius: 10px;
             transition: width 0.5s ease-in-out;
         }
@@ -201,7 +205,7 @@
         .start-screen h1 {
             font-size: 2.5rem;
             font-weight: 700;
-            color: #4a90e2;
+            color: #FF6347; /* トマト色 */
             margin-bottom: 20px;
         }
         .start-screen p {
@@ -211,7 +215,8 @@
             line-height: 1.6;
         }
         .start-button {
-            background: linear-gradient(45deg, #4CAF50 0%, #8bc34a 100%);
+            /* より鮮やかなグラデーション */
+            background: linear-gradient(45deg, #32CD32 0%, #FFD700 100%); /* ライムグリーンからゴールド */
             color: white;
             padding: 18px 40px;
             border-radius: 12px;
@@ -265,7 +270,7 @@
             margin-bottom: 25px;
         }
         .modal-button {
-            background-color: #4CAF50;
+            background-color: #32CD32; /* ライムグリーン */
             color: white;
             padding: 10px 20px;
             border: none;
@@ -275,18 +280,32 @@
             transition: background-color 0.3s ease;
         }
         .modal-button:hover {
-            background-color: #45a049;
+            background-color: #228B22; /* フォレストグリーン */
         }
         .progress-text {
             font-size: 1rem;
             color: #666;
             margin-bottom: 15px;
         }
+        /* フッターのスタイル */
+        footer {
+            margin-top: auto; /* コンテンツが少ない場合でもフッターを下に固定 */
+            padding: 15px;
+            text-align: center;
+            color: #666;
+            font-size: 0.85rem;
+            background-color: #f0f0f0;
+            width: 100%;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
     </style>
 </head>
 <body>
     <div id="startScreen" class="start-screen">
-        <h1>見取り力向上アプリ</h1>
+        <h1>MiToRi</h1>
+        <p class="text-sm text-gray-500 mt-1">ver3.0</p>
         <p>学生の非認知能力を伸ばすための教員の見取り力を高めるアプリです。「気づき」「読み解き」「意味づけ」の3つの視点から、あなたの見取り力を診断しましょう。</p>
         <button id="startButton" class="start-button">診断を開始する</button>
     </div>
@@ -365,6 +384,11 @@
     </div>
     </div>
 
+    <!-- フッターの追加 -->
+    <footer>
+        2025 Anabuki College Group. All Rights Reserved.
+    </footer>
+
     <script>
         // クイズデータ
         const quizData = {
@@ -372,19 +396,19 @@
                 {
                     question: "授業中、いつも活発なAさんが今日は静かで、うつむきがちです。まず、何に気づきますか？",
                     options: [
-                        { text: "Aさんの表情が硬く、視線が定まらないこと。", isCorrect: true },
-                        { text: "Aさんが普段と違う色のペンを使っていること。", isCorrect: false },
-                        { text: "Aさんが休憩時間も席を立たないでいること。", isCorrect: false },
-                        { text: "Aさんの机の上の教科書がいつもより開いていないこと。", isCorrect: false }
+                        { text: "Aさんの表情が硬く、視線が定まらないなど、普段と異なる身体的サインがあること。", isCorrect: true },
+                        { text: "Aさんが普段使用している筆記用具とは違う、新しいペンを使っていること。", isCorrect: false },
+                        { text: "Aさんが休憩時間中も、他の学生との交流を避け、一人で席に座り続けていること。", isCorrect: false },
+                        { text: "Aさんの机の上の教科書が、授業開始から時間が経ってもほとんど開かれていないこと。", isCorrect: false }
                     ],
                     feedback: "正解です！「気づき」の第一歩は、普段との違いや些細な変化に目を向けることです。Aさんの内面に寄り添う視点が良いですね。"
                 },
                 {
                     question: "発表が苦手なBさんが、今日のプレゼンテーションでは驚くほど流暢に話しています。何に気づきますか？",
                     options: [
-                        { text: "Bさんがいつもより声のトーンが高く、自信に満ちていること。", isCorrect: true },
-                        { text: "Bさんが発表中に時々、原稿に目を落としていること。", isCorrect: false },
-                        { text: "Bさんのプレゼンテーション資料がいつもよりカラフルであること。", isCorrect: false },
+                        { text: "Bさんの声のトーンがいつもより高く、話すスピードも自信に満ちていること。", isCorrect: true },
+                        { text: "Bさんが発表中に時々、用意された原稿に目を落とし、内容を確認していること。", isCorrect: false },
+                        { text: "Bさんのプレゼンテーション資料が、以前の発表と比べて非常にカラフルで凝っていること。", isCorrect: false },
                         { text: "他の学生がBさんの発表に熱心に耳を傾けていること。", isCorrect: false }
                     ],
                     feedback: "正解です！Bさんの自信が声や態度に表れていることに気づくのは素晴らしいです。ポジティブな変化を見逃さないことが大切です。"
@@ -392,30 +416,30 @@
                 {
                     question: "いつも課題を素早くこなすCさんが、今日の演習では珍しく手が止まり、考え込んでいる様子です。何に気づきますか？",
                     options: [
-                        { text: "Cさんが課題の特定の箇所で何度もペンを動かしたり止めたりしていること。", isCorrect: true },
-                        { text: "Cさんの机の上がいつもより散らかっていること。", isCorrect: false },
-                        { text: "Cさんが時々、隣の学生の様子を気にしていること。", isCorrect: false },
-                        { text: "演習室の室温がいつもより低いこと。", isCorrect: false }
+                        { text: "Cさんが課題の特定の箇所で何度もペンを動かしたり止めたり、消しゴムを使ったりしていること。", isCorrect: true },
+                        { text: "Cさんの机の上がいつもより散らかっており、資料が整理されていない状態であること。", isCorrect: false },
+                        { text: "Cさんが時々、隣の学生の様子を気にしながら、自分の作業と見比べていること。", isCorrect: false },
+                        { text: "演習室の室温がいつもより低く、Cさんが少し寒そうにしていること。", isCorrect: false }
                     ],
                     feedback: "正解です！Cさんの普段との違いに気づくことが重要です。行動の細部に注目することで、思考のプロセスや困難に直面している可能性が見えてきます。"
                 },
                 {
                     question: "普段は時間厳守のDさんが、今日の授業に遅れて入室してきました。何に気づきますか？",
                     options: [
-                        { text: "Dさんが入室時に少し息を切らしており、顔が赤らんでいること。", isCorrect: true },
-                        { text: "Dさんがいつもと違うカバンを持っていること。", isCorrect: false },
-                        { text: "Dさんが着席後、すぐにスマホをチェックしていること。", isCorrect: false },
-                        { text: "教室の時計が少し進んでいること。", isCorrect: false }
+                        { text: "Dさんが入室時に少し息を切らしており、顔が赤らんでいるなど、急いで来たような身体的サインがあること。", isCorrect: true },
+                        { text: "Dさんがいつもと違うデザインや色のカバンを持っていること。", isCorrect: false },
+                        { text: "Dさんが着席後、すぐにスマートフォンを取り出し、画面を熱心にチェックしていること。", isCorrect: false },
+                        { text: "教室の壁にある時計が、普段よりも数分進んでいるように見えること。", isCorrect: false }
                     ],
                     feedback: "正解です！外見や身体的な変化に気づくことは、学生の状況を把握する上で大切な情報源となります。焦りや体調不良のサインかもしれません。"
                 },
                 {
                     question: "普段はあまり発言しないEさんが、休み時間に友人たちと大きな声で笑い、活発に話しています。何に気づきますか？",
                     options: [
-                        { text: "Eさんの会話の中心に、新しい趣味の話題があること。", isCorrect: true },
-                        { text: "Eさんのグループの人数がいつもより多いこと。", isCorrect: false },
-                        { text: "Eさんが新しいヘアスタイルにしていること。", isCorrect: false },
-                        { text: "Eさんが持っている飲み物がいつもと違うこと。", isCorrect: false }
+                        { text: "Eさんの会話の中心に、最近始めたばかりの新しい趣味や活動の話題があること。", isCorrect: true },
+                        { text: "Eさんのグループの人数がいつもより多く、見慣れない学生が加わっていること。", isCorrect: false },
+                        { text: "Eさんが以前とは違う、新しいヘアスタイルにしていること。", isCorrect: false },
+                        { text: "Eさんが持っている飲み物が、普段Eさんが飲んでいるものと違うこと。", isCorrect: false }
                     ],
                     feedback: "正解です！学生の興味や関心の変化に気づくことは、その学生の成長や内面の変化を捉える手がかりになります。ポジティブな変化を見逃さないようにしましょう。"
                 }
@@ -424,50 +448,50 @@
                 {
                     question: "いつも整理整頓されているFさんの机が、最近少し散らかっていることに気づきました。その理由を「読み解く」ために、どのような仮説を立てますか？",
                     options: [
-                        { text: "Fさんが学業以外の活動（部活動、アルバイトなど）に時間を割いており、多忙になっている可能性がある。", isCorrect: true },
-                        { text: "Fさんが急に整理整頓が苦手になったと考える。", isCorrect: false },
-                        { text: "Fさんが新しい文房具をたくさん買ったため、机が狭くなったと考える。", isCorrect: false },
-                        { text: "Fさんが部屋の掃除を怠けているだけだと決めつける。", isCorrect: false }
+                        { text: "Fさんが学業以外の活動（部活動、アルバイト、ボランティアなど）に時間を割いており、多忙になっている可能性がある。", isCorrect: true },
+                        { text: "Fさんが急に整理整頓が苦手になったり、無関心になったりしたと考える。", isCorrect: false },
+                        { text: "Fさんが新しい文房具や教材をたくさん買ったため、机の上が狭くなったと考える。", isCorrect: false },
+                        { text: "Fさんが部屋の掃除を怠けているだけで、学校の机もその影響を受けていると決めつける。", isCorrect: false }
                     ],
                     feedback: "正解です！「読み解き」では、表面的な行動だけでなく、その背景にある生活状況や心理状態を推測する視点が重要です。多忙による影響はよくあるケースです。"
                 },
                 {
                     question: "積極的に質問をするGさんが、今日の専門科目の授業では一度も質問をしません。この行動の理由を「読み解く」ために、どのような観点から考えますか？",
                     options: [
-                        { text: "授業内容がGさんにとって非常に簡単で、疑問点がないのかもしれない。", isCorrect: true },
-                        { text: "Gさんが授業に興味を失ったと判断する。", isCorrect: false },
-                        { text: "Gさんが体調不良で発言する元気がないと決めつける。", isCorrect: false },
-                        { text: "Gさんが質問の仕方を忘れてしまったと考える。", isCorrect: false }
+                        { text: "授業内容がGさんにとって非常に簡単で、疑問点がないほど完全に理解しているのかもしれない。", isCorrect: true },
+                        { text: "Gさんが今日の授業内容に全く興味を失ってしまい、集中していないと判断する。", isCorrect: false },
+                        { text: "Gさんが体調不良や精神的な疲労を感じており、発言する元気がないと決めつける。", isCorrect: false },
+                        { text: "Gさんが質問の仕方を忘れてしまったか、質問すること自体に抵抗を感じるようになったと考える。", isCorrect: false }
                     ],
                     feedback: "正解です！「読み解き」では、ポジティブな可能性も考慮することが大切です。理解度が高いから質問がない、という視点も持ちましょう。"
                 },
                 {
-                    question: "普段は個人で課題に取り組むことを好むHさんが、今回のプロジェクトではグループワークを希望してきました。この変化の理由を「読み解く」ために、どのような情報を重視しますか？",
+                    question: "普段は個人で課題に取り組むことを好むHさんが、今回のプロジェクトでは珍しくグループワークを希望してきました。この変化の理由を「読み解く」ために、どのような情報を重視しますか？",
                     options: [
-                        { text: "プロジェクトのテーマが、Hさんの個人では達成困難な規模や内容であるか。", isCorrect: true },
-                        { text: "Hさんが最近、友人関係で悩みを抱えているかどうか。", isCorrect: false },
-                        { text: "Hさんがグループワークの楽しさに目覚めたと考える。", isCorrect: false },
-                        { text: "Hさんが単に他の人に手伝ってほしいだけだと判断する。", isCorrect: false }
+                        { text: "今回のプロジェクトのテーマが、Hさんの個人では達成困難なほど規模が大きく、協働が必要な内容であるか。", isCorrect: true },
+                        { text: "Hさんが最近、特定の友人関係で悩みを抱えており、グループワークで気分転換を図ろうとしているかどうか。", isCorrect: false },
+                        { text: "Hさんがグループワークの楽しさに急に目覚め、積極的に参加したいと考えるようになったと判断する。", isCorrect: false },
+                        { text: "Hさんが単に他の人に手伝ってほしいだけで、自分では努力したくないと考えていると判断する。", isCorrect: false }
                     ],
                     feedback: "正解です！「読み解き」では、学生の学習状況や課題の特性と行動を結びつけて考えることが重要です。課題の難易度が協働を促した可能性を探りましょう。"
                 },
                 {
                     question: "普段はあまり目を合わせないIさんが、最近、教員や友人と話す際にしっかりと目を合わせるようになりました。この変化の理由を「読み解く」ために、どのような仮説を立てますか？",
                     options: [
-                        { text: "Iさんが自己肯定感を高める経験をしたか、コミュニケーションへの意識が変化した可能性がある。", isCorrect: true },
-                        { text: "Iさんがコンタクトレンズを使い始めたと考える。", isCorrect: false },
-                        { text: "Iさんが単に教員や友人の顔をよく見たいだけだと考える。", isCorrect: false },
-                        { text: "Iさんが誰かに目を合わせるように指導されたと決めつける。", isCorrect: false }
+                        { text: "Iさんが自己肯定感を高める経験をしたか、またはコミュニケーションに対する意識がポジティブに変化した可能性がある。", isCorrect: true },
+                        { text: "Iさんが新しくコンタクトレンズを使い始めたため、視力が向上し、目を合わせやすくなったと考える。", isCorrect: false },
+                        { text: "Iさんが単に教員や友人の顔をよく見たいという好奇心から、目を合わせるようになっただけだと考える。", isCorrect: false },
+                        { text: "Iさんが誰かに目を合わせるように指導されたか、そうすべきだと強く意識するようになったと決めつける。", isCorrect: false }
                     ],
                     feedback: "正解です！「読み解き」では、学生の内面的な成長や意識の変化に焦点を当てることが重要です。ポジティブな変化の背景には、自己成長のきっかけがあるかもしれません。"
                 },
                 {
                     question: "授業中は静かなJさんが、オンラインの学習プラットフォームでは活発にコメントしたり、質問したりしています。この行動の理由を「読み解く」ために、どのような観点から考えますか？",
                     options: [
-                        { text: "Jさんが対面での発言に抵抗があるが、テキストベースのコミュニケーションでは力を発揮しやすいタイプである。", isCorrect: true },
-                        { text: "Jさんがオンライン学習の方が好きだと考える。", isCorrect: false },
-                        { text: "Jさんが授業中に集中していないため、後でオンラインで質問していると判断する。", isCorrect: false },
-                        { text: "Jさんがオンラインでのみ積極的になれる特別な理由があると決めつける。", isCorrect: false }
+                        { text: "Jさんが対面での発言に抵抗があるが、テキストベースのコミュニケーションでは自分の考えを表現しやすいタイプである。", isCorrect: true },
+                        { text: "Jさんがオンライン学習の方が対面授業よりも好きで、そのため積極的に参加していると考える。", isCorrect: false },
+                        { text: "Jさんが授業中に集中していないため、後でオンラインで質問して内容を補っていると判断する。", isCorrect: false },
+                        { text: "Jさんがオンラインでのみ積極的になれる特別な理由があり、対面ではその能力を発揮できないと決めつける。", isCorrect: false }
                     ],
                     feedback: "正解です！「読み解き」では、学生の多様な学習スタイルやコミュニケーション特性を理解することが重要です。環境によって発揮される能力が異なることを認識しましょう。"
                 }
@@ -477,9 +501,9 @@
                     question: "いつも元気なKさんが、最近授業中にうつろな表情で、課題への意欲も低いように見えます。この状況を「読み解き」、Kさんが精神的な疲労を抱えていると判断しました。どのように「意味づけ」し、対応しますか？",
                     options: [
                         { text: "Kさんの状況を深刻に捉え、まずは個別面談で心の状態を確認し、必要に応じてカウンセリングなどの専門的支援を提案する。", isCorrect: true },
-                        { text: "Kさんに「疲れているの？」と軽く声をかけるだけで、あとはKさんの自主性に任せる。", isCorrect: false },
-                        { text: "Kさんの成績が落ちないよう、課題の量を減らしてあげる。", isCorrect: false },
-                        { text: "Kさんが一時的にやる気を失っているだけだと判断し、特に何もしない。", isCorrect: false }
+                        { text: "Kさんに「疲れているの？」と軽く声をかけるだけで、あとはKさんの自主性に任せる。自力で解決できると信じて見守る。", isCorrect: false },
+                        { text: "Kさんの成績が落ちないよう、一時的に課題の量を減らしてあげることで負担を軽減する。", isCorrect: false },
+                        { text: "Kさんが一時的にやる気を失っているだけだと判断し、特に何もしないで様子を見るのが最善だと考える。", isCorrect: false }
                     ],
                     feedback: "正解です！「意味づけ」は、その後の具体的な行動につながる重要なステップです。学生の状況を深く理解し、適切なサポートを検討する姿勢が素晴らしいです。早期の専門的支援の検討は非常に重要です。"
                 },
@@ -487,9 +511,9 @@
                     question: "常に課題提出が遅れがちだったLさんが、今回の課題を期限より早く提出してきました。この変化を「読み解き」、Lさんが学習への意識を高めたと判断しました。どのように「意味づけ」し、対応しますか？",
                     options: [
                         { text: "Lさんの努力を具体的に称賛し、その意識をさらに伸ばすために、次のステップとしてより挑戦的な課題や学習機会を提案する。", isCorrect: true },
-                        { text: "Lさんに「今回は早かったね」とだけ伝え、特に深掘りはしない。", isCorrect: false },
-                        { text: "Lさんがたまたま早くできただけだと考え、過度な期待はしない。", isCorrect: false },
-                        { text: "他の学生にもLさんを見習うように全体で促す。", isCorrect: false }
+                        { text: "Lさんに「今回は早かったね」とだけ伝え、特に深掘りはせず、次の課題も頑張るよう促すに留める。", isCorrect: false },
+                        { text: "Lさんがたまたま早くできただけで、今後も続くとは限らないと考え、過度な期待はしないでおく。", isCorrect: false },
+                        { text: "他の学生にもLさんを見習うように全体で促し、Lさんの行動を模範として紹介する。", isCorrect: false }
                     ],
                     feedback: "正解です！「意味づけ」では、学生のポジティブな変化を捉え、それをさらに伸ばすための具体的な働きかけが重要です。学習意欲の向上につながるフィードバックは素晴らしいです。"
                 },
@@ -497,9 +521,9 @@
                     question: "普段は授業中にほとんど発言しないMさんが、ある学生が不当な批判を受けた際に、その学生を擁護する発言をしました。この行動を「読み解き」、Mさんが強い正義感と共感性を持っていると判断しました。どのように「意味づけ」し、対応しますか？",
                     options: [
                         { text: "Mさんの勇気ある行動と共感性を高く評価し、その行動を具体的に褒め、今後も安心して意見を表明できるようなクラスの雰囲気作りを意識する。", isCorrect: true },
-                        { text: "Mさんが珍しく発言したことについて、特に触れずに見守る。", isCorrect: false },
-                        { text: "Mさんが感情的になっているだけだと考え、冷静になるよう促す。", isCorrect: false },
-                        { text: "Mさんの発言が授業の進行を妨げたとして、注意を与える。", isCorrect: false }
+                        { text: "Mさんが珍しく発言したことについて、特に触れずに見守り、今後の変化を観察するに留める。", isCorrect: false },
+                        { text: "Mさんが感情的になっているだけだと考え、冷静になるよう促し、個人的な感情を控えるよう指導する。", isCorrect: false },
+                        { text: "Mさんの発言が授業の進行を妨げたとして、注意を与え、授業の秩序を優先させる。", isCorrect: false }
                     ],
                     feedback: "正解です！「意味づけ」では、学生の行動の背景にある内面的な特性を肯定的に捉え、それを今後の成長につなげるための環境を整えることが重要です。勇気を称えることは大きな自信につながります。"
                 },
@@ -507,9 +531,9 @@
                     question: "ある科目に苦手意識を持っていたNさんが、最近の小テストで大幅に点数を伸ばしました。この変化を「読み解き」、Nさんが学習方法を改善し、努力が実を結んだと判断しました。どのように「意味づけ」し、対応しますか？",
                     options: [
                         { text: "Nさんの努力と成果を具体的に認め、成功体験を言語化させることで自信を深めさせ、他の科目への応用やさらなる学習意欲向上に繋げる。", isCorrect: true },
-                        { text: "Nさんに「よく頑張ったね」とだけ伝え、次のテストも頑張るように促す。", isCorrect: false },
-                        { text: "Nさんがたまたま良い点数を取れただけだと考え、特に何もしない。", isCorrect: false },
-                        { text: "Nさんの成功事例を他の苦手な学生に共有させる。", isCorrect: false }
+                        { text: "Nさんに「よく頑張ったね」とだけ伝え、次のテストも頑張るように促すに留める。", isCorrect: false },
+                        { text: "Nさんがたまたま良い点数を取れただけだと考え、特に何もしないで様子を見る。", isCorrect: false },
+                        { text: "Nさんの成功事例を他の苦手な学生に共有させ、Nさんをクラスの模範として紹介する。", isCorrect: false }
                     ],
                     feedback: "正解です！「意味づけ」では、学生の成功を具体的に評価し、その成功要因を学生自身が認識することで、自己効力感を高めることが重要です。他の学習への波及効果も期待できます。"
                 },
@@ -518,8 +542,8 @@
                     options: [
                         { text: "Oさんの変化をポジティブに捉え、協働学習の機会をさらに提供したり、Oさんが他者と協力する中で新たな学びを得られるようサポートする。", isCorrect: true },
                         { text: "Oさんが弱気になったと判断し、もっと自力で頑張るように促す。", isCorrect: false },
-                        { text: "Oさんが依存的になっているのではないかと懸念し、見守る。", isCorrect: false },
-                        { text: "Oさんが質問ばかりして他の学生の邪魔にならないよう注意する。", isCorrect: false }
+                        { text: "Oさんが依存的になっているのではないかと懸念し、見守るに留める。", isCorrect: false },
+                        { text: "Oさんが質問ばかりして他の学生の邪魔にならないよう注意し、質問の頻度を控えるよう促す。", isCorrect: false }
                     ],
                     feedback: "正解です！「意味づけ」では、学生の行動の背景にあるポジティブな側面を見出し、それを成長の機会と捉えることが重要です。協調性の芽生えを育むための働きかけは、非認知能力の向上に繋がります。"
                 }
@@ -814,7 +838,7 @@
                 } else if (score >= 2) {
                     feedback = "「読み解き」の力は良好です。学生の行動の背景を考える習慣はついていますが、さらに多角的な情報（過去のデータ、他の教員の意見など）を取り入れることで、より正確な「読み解き」が可能になります。仮説を立てて検証する練習も有効です。**具体的には、学生の行動を見たときに「なぜだろう？」と問いかけ、考えられる理由を3つ以上書き出してみましょう。そして、それぞれの理由を裏付ける情報や、反証する情報がないかを探る練習をしてみてください。**";
                 } else {
-                    feedback = "「読み解き」の力を向上させる余地があります。学生の行動に対して、安易に決めつけず、なぜそのような行動をとったのかを深く考える習慣をつけましょう。情報収集の幅を広げ、様々な可能性を検討することが重要です。**具体的には、学生の行動を見たときに、すぐに結論を出さずに「もしかしたら〇〇かもしれないし、△△かもしれない」と複数の可能性を考える癖をつけましょう。そして、その可能性を検証するために、どのような情報が必要かを考えてみてください。**";
+                    feedback = "「読み解き」の力を向上させる余地があります。学生の行動に対して、安易に決めつけず、なぜそのような行動をとったのかを深く考える習慣をつけましょう。情報収集の幅を広げ、様々な可能性を検討することが重要ですし、**具体的には、学生の行動を見たときに、すぐに結論を出さずに「もしかしたら〇〇かもしれないし、△△かもしれない」と複数の可能性を考える癖をつけましょう。そして、その可能性を検証するために、どのような情報が必要かを考えてみてください。**";
                 }
             } else if (category === 'imitsuke') {
                 if (score >= 4) {
@@ -900,4 +924,3 @@
     </script>
 </body>
 </html>
-
