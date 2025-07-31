@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>見取り力向上クイズ</title>
+    <!-- Tailwind CSSを読み込み -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #f0f9ff 0%, #cbebff 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 0.8s ease-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .quiz-section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border-radius: 15px;
+            background-color: #f8faff;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        .question-text {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .option-button {
+            background-color: #e0f2fe;
+            color: #007bff;
+            border: 2px solid #a7d9f7;
+            padding: 15px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            text-align: left;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+        }
+        .option-button:hover {
+            background-color: #cce7ff;
+            border-color: #87c5ed;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        .option-button.selected {
+            background-color: #007bff;
+            color: #ffffff;
+            border-color: #0056b3;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+        .submit-button {
+            background: linear-gradient(45deg, #6a82fb 0%, #fc5c7d 100%);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 10px;
+            border: none;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 30px;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+        .submit-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
+        }
+        .result-section {
+            margin-top: 40px;
+            padding: 30px;
+            background-color: #e6ffee;
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            text-align: left;
+            animation: slideIn 0.8s ease-out;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .result-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #28a745;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .score-item {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            color: #333;
+        }
+        .feedback-item {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #fff3cd;
+            border-left: 5px solid #ffc107;
+            border-radius: 8px;
+            font-size: 1rem;
+            color: #6a4f00;
+            line-height: 1.5;
+        }
+        .feedback-item strong {
+            color: #d39e00;
+        }
+        .overall-feedback-item { /* 新しいスタイル */
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e0f2fe; /* 明るい青 */
+            border-left: 5px solid #007bff; /* 青 */
+            border-radius: 8px;
+            font-size: 1rem;
+            color: #004085; /* 濃い青 */
+            line-height: 1.5;
+        }
+        .overall-feedback-item strong { /* 新しいスタイル */
+            color: #0056b3; /* さらに濃い青 */
+        }
+        .quote-section {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f0f8ff;
+            border-radius: 15px;
+            border: 1px solid #cce7ff;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+        }
+        .quote-text {
+            font-size: 1.2rem;
+            font-style: italic;
+            color: #4a90e2;
+            margin-bottom: 10px;
+            line-height: 1.6;
+        }
+        .quote-source {
+            font-size: 0.9rem;
+            color: #666;
+            text-align: right;
+        }
+        .hidden {
+            display: none;
+        }
+        .progress-bar-container {
+            width: 100%;
+            background-color: #e0e0e0;
+            border-radius: 10px;
+            height: 15px;
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background-color: #4CAF50;
+            border-radius: 10px;
+            transition: width 0.5s ease-in-out;
+        }
+        .start-screen {
+            background-color: #ffffff;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            animation: fadeIn 0.8s ease-out;
+        }
+        .start-screen h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #4a90e2;
+            margin-bottom: 20px;
+        }
+        .start-screen p {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        .start-button {
+            background: linear-gradient(45deg, #4CAF50 0%, #8bc34a 100%);
+            color: white;
+            padding: 18px 40px;
+            border-radius: 12px;
+            border: none;
+            font-size: 1.3rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+        }
+        .start-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.3);
+        }
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: auto;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            width: 80%;
+            max-width: 500px;
+            text-align: center;
+            animation: zoomIn 0.3s ease-out;
+        }
+        @keyframes zoomIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .modal-content h2 {
+            font-size: 1.8rem;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        .modal-content p {
+            font-size: 1.1rem;
+            color: #555;
+            margin-bottom: 25px;
+        }
+        .modal-button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+        }
+        .modal-button:hover {
+            background-color: #45a049;
+        }
+        .progress-text {
+            font-size: 1rem;
+            color: #666;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div id="startScreen" class="start-screen">
+        <h1>見取り力向上アプリ</h1>
+        <p>学生の非認知能力を伸ばすための教員の見取り力を高めるアプリです。「気づき」「読み解き」「意味づけ」の3つの視点から、あなたの見取り力を診断しましょう。</p>
+        <button id="startButton" class="start-button">診断を開始する</button>
+    </div>
+
+    <div id="quizContainer" class="container hidden">
+        <h2 class="text-3xl font-bold text-gray-800 mb-6">見取り力診断クイズ</h2>
+
+        <!-- 各セクションの進捗表示 -->
+        <p class="progress-text" id="questionProgress"></p>
+
+        <!-- 気づきセクション -->
+        <div id="kizukiSection" class="quiz-section hidden">
+            <h3 class="text-2xl font-semibold text-blue-600 mb-4">「気づき」の視点</h3>
+            <p class="question-text" id="kizukiQuestion"></p>
+            <div class="options-grid" id="kizukiOptions"></div>
+        </div>
+
+        <!-- 読み解きセクション -->
+        <div id="yomitoSection" class="quiz-section hidden">
+            <h3 class="text-2xl font-semibold text-purple-600 mb-4">「読み解き」の視点</h3>
+            <p class="question-text" id="yomitoQuestion"></p>
+            <div class="options-grid" id="yomitoOptions"></div>
+        </div>
+
+        <!-- 意味づけセクション -->
+        <div id="imitsukeSection" class="quiz-section hidden">
+            <h3 class="text-2xl font-semibold text-green-600 mb-4">「意味づけ」の視点</h3>
+            <p class="question-text" id="imitsukeQuestion"></p>
+            <div class="options-grid" id="imitsukeOptions"></div>
+        </div>
+
+        <!-- 「次の問題へ」ボタンは自動遷移のため削除 -->
+        <button id="submitQuiz" class="submit-button hidden">結果を見る</button>
+    </div>
+
+    <div id="resultContainer" class="container hidden">
+        <h2 class="result-title">診断結果</h2>
+        <div class="progress-bar-container">
+            <div id="overallProgressBar" class="progress-bar"></div>
+        </div>
+        <div class="score-item"><strong>気づきスコア:</strong> <span id="kizukiScore"></span> / 5</div>
+        <div class="score-item"><strong>読み解きスコア:</strong> <span id="yomitoScore"></span> / 5</div>
+        <div class="score-item"><strong>意味づけスコア:</strong> <span id="imitsukeScore"></span> / 5</div>
+        <div class="score-item"><strong>総合スコア:</strong> <span id="overallScore"></span> / 15</div>
+
+        <div class="feedback-item" id="kizukiFeedback">
+            <strong>「気づき」に関するフィードバック:</strong> <span id="kizukiFeedbackText"></span>
+        </div>
+        <div class="feedback-item" id="yomitoFeedback">
+            <strong>「読み解き」に関するフィードバック:</strong> <span id="yomitoFeedbackText"></span>
+        </div>
+        <div class="feedback-item" id="imitsukeFeedback">
+            <strong>「意味づけ」に関するフィードバック:</strong> <span id="imitsukeFeedbackText"></span>
+        </div>
+
+        <!-- 新しく追加する総評アドバイスセクション -->
+        <div class="overall-feedback-item" id="overallFeedback">
+            <strong>総評:</strong> <span id="overallFeedbackText"></span>
+        </div>
+
+        <!-- 名言セクション -->
+        <div class="quote-section">
+            <p class="quote-text" id="displayQuote"></p>
+            <p class="quote-source" id="quoteSource"></p>
+        </div>
+
+        <button id="restartButton" class="submit-button mt-8">もう一度診断する</button>
+    </div>
+
+    <!-- Modal for messages -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <h2 id="modalTitle"></h2>
+            <p id="modalMessage"></p>
+            <button id="modalCloseButton" class="modal-button">OK</button>
+        </div>
+    </div>
+
+    <script>
+        // クイズデータ
+        const quizData = {
+            kizuki: [
+                {
+                    question: "授業中、いつも活発なAさんが今日は静かで、うつむきがちです。まず、何に気づきますか？",
+                    options: [
+                        { text: "Aさんの表情や姿勢に普段との違いがある。", isCorrect: true },
+                        { text: "Aさんが昨日と違う色の服を着ている。", isCorrect: false },
+                        { text: "クラス全体の集中力が少し低いように見える。", isCorrect: false },
+                        { text: "授業内容がAさんにとって難しすぎると感じる。", isCorrect: false }
+                    ],
+                    feedback: "正解です！「気づき」の第一歩は、普段との違いや些細な変化に目を向けることです。Aさんの内面に寄り添う視点が良いですね。"
+                },
+                {
+                    question: "グループワークで、Bさんが積極的に発言する一方、Cさんがほとんど話していません。Cさんの様子で特に気づくべき点は何ですか？",
+                    options: [
+                        { text: "Cさんが他のメンバーの意見を熱心にメモしている。", isCorrect: true },
+                        { text: "Cさんのノートがほとんど空白のままである。", isCorrect: false },
+                        { text: "Bさんの発言が他の学生よりも多いこと。", isCorrect: false },
+                        { text: "グループ全体の進捗が予定より遅れている。", isCorrect: false }
+                    ],
+                    feedback: "正解です！Cさんが話していない中でも、積極的に聞いている姿勢は、内面で思考している可能性を示唆します。表面的な行動だけでなく、その背景にある意図を捉えようとする視点が重要です。"
+                },
+                {
+                    question: "Dさんが提出した課題の記述が、いつもより丁寧に書かれています。この変化から何に気づきますか？",
+                    options: [
+                        { text: "Dさんが課題に特別な関心や努力を払ったこと。", isCorrect: true },
+                        { text: "Dさんが誰かに手伝ってもらった可能性。", isCorrect: false },
+                        { text: "Dさんが他の課題を疎かにしているかもしれない。", isCorrect: false },
+                        { text: "Dさんの筆記具が新しくなったこと。", isCorrect: false }
+                    ],
+                    feedback: "正解です！課題への取り組み方の変化は、学生のモチベーションや学習状況の変化を示す重要なサインです。ポジティブな変化を見逃さないことが「気づき」の質を高めます。"
+                },
+                {
+                    question: "Eさんが最近、休み時間に他の学生と話す機会が減り、一人で過ごすことが増えました。この状況で何に気づきますか？",
+                    options: [
+                        { text: "Eさんの人間関係や心理状態に変化があるかもしれない。", isCorrect: true },
+                        { text: "Eさんが読書や趣味に没頭している様子。", isCorrect: false },
+                        { text: "Eさんが新しい趣味を見つけた可能性がある。", isCorrect: false },
+                        { text: "クラス全体の雰囲気が以前より静かになった。", isCorrect: false }
+                    ],
+                    feedback: "正解です！学生の行動範囲や交流の変化は、心理状態や社会性の変化を示すことがあります。孤立している可能性や、内向的な傾向が強まっている可能性に気づくことが大切です。"
+                },
+                {
+                    question: "Fさんが授業中に頻繁に時計を見ています。この行動から何に気づきますか？",
+                    options: [
+                        { text: "Fさんが授業に飽きているか、次の予定を気にしている。", isCorrect: true },
+                        { text: "Fさんが時間を守ろうと意識している。", isCorrect: false },
+                        { text: "Fさんが新しい時計を身につけている。", isCorrect: false },
+                        { text: "Fさんが授業の終わりを待ち望んでいる様子。", isCorrect: false }
+                    ],
+                    feedback: "正解です！頻繁に時計を見る行動は、授業への集中力の低下や、何か他のことに意識が向いているサインです。その背景にある理由を探るための「気づき」として適切です。"
+                }
+            ],
+            yomito: [
+                {
+                    question: "Aさんが静かでうつむきがちであることに気づきました。次に、その理由を「読み解く」ためにどのような情報を集めますか？",
+                    options: [
+                        { text: "Aさんの最近の学習状況や友人関係について、他の教員や学生から情報を得る。", isCorrect: true },
+                        { text: "Aさんに直接「どうしたの？」と尋ねる。", isCorrect: false },
+                        { text: "Aさんの家庭環境について、保護者に連絡する。", isCorrect: false },
+                        { text: "Aさんが静かなのは元々の性格だと決めつける。", isCorrect: false }
+                    ],
+                    feedback: "正解です！「読み解き」には多角的な情報収集が不可欠です。複数の視点から情報を集めることで、より正確な状況把握につながります。"
+                },
+                {
+                    question: "Bさんがグループワークで積極的に発言する一方、Cさんがほとんど話していません。Cさんが話さない理由を「読み解く」ために、どのような仮説を立て、検証しますか？",
+                    options: [
+                        { text: "Cさんが話すのが苦手か、意見がまとまっていないかを、過去の言動や課題から推測する。", isCorrect: true },
+                        { text: "CさんがBさんの意見に圧倒されていると決めつける。", isCorrect: false },
+                        { text: "Cさんがグループワークに興味がないと判断する。", isCorrect: false },
+                        { text: "Cさんに「なぜ話さないのか」と問い詰める。", isCorrect: false }
+                    ],
+                    feedback: "正解です！「読み解き」では、表面的な行動だけでなく、過去のデータや学生の特性を踏まえた仮説立てが重要です。決めつけずに、様々な可能性を考慮する視点が優れています。"
+                },
+                {
+                    question: "Dさんが提出した課題の記述が、いつもより丁寧に書かれています。この変化の理由を「読み解く」ためにどのような視点で情報を分析しますか？",
+                    options: [
+                        { text: "Dさんが特に興味を持った内容か、特定の評価を意識しているかを課題内容や学習態度から分析する。", isCorrect: true },
+                        { text: "Dさんが単純に暇だったからだと考える。", isCorrect: false },
+                        { text: "Dさんが他の学生の課題を参考にしたと疑う。", isCorrect: false },
+                        { text: "Dさんの学習能力が突然向上したと結論づける。", isCorrect: false }
+                    ],
+                    feedback: "正解です！「読み解き」では、学生の行動の背景にある動機や意図を探ることが重要です。課題の内容や学生の学習態度から、内面的な変化を推測する視点が優れています。"
+                },
+                {
+                    question: "Eさんが最近、休み時間に一人で過ごすことが増えたことに気づきました。この状況を「読み解く」ために、どのような情報を重視しますか？",
+                    options: [
+                        { text: "Eさんの表情、授業中の様子、過去の友人関係の変遷に注目し、総合的に判断する。", isCorrect: true },
+                        { text: "Eさんがスマホを触っている時間が増えたかどうかを確認する。", isCorrect: false },
+                        { text: "Eさんの趣味が変わったかどうかを尋ねる。", isCorrect: false },
+                        { text: "Eさんが特定の友人と喧嘩したかどうかを調べる。", isCorrect: false }
+                    ],
+                    feedback: "正解です！「読み解き」では、単一の情報だけでなく、複数の情報を統合して考えることが重要です。学生の全体像を捉えることで、より深い理解につながります。"
+                },
+                {
+                    question: "Fさんが授業中に頻繁に時計を見ていることに気づきました。この行動の理由を「読み解く」ために、どのような観点から考えますか？",
+                    options: [
+                        { text: "授業への関心度、体調、個人的な懸念事項（次の予定、家庭の事情など）を考慮する。", isCorrect: true },
+                        { text: "Fさんが授業に集中していないと決めつけ、注意する。", isCorrect: false },
+                        { text: "Fさんが時間を気にしているのは当たり前だと無視する。", isCorrect: false },
+                        { text: "Fさんの時計が新しいものかどうかを確認する。", isCorrect: false }
+                    ],
+                    feedback: "正解です！「読み解き」では、学生の行動の背景にある多様な可能性を考慮することが重要です。授業への関心だけでなく、体調や個人的な事情など、幅広い視点から推測する姿勢が優れています。"
+                }
+            ],
+            imitsuke: [
+                {
+                    question: "Aさんが静かでうつむきがちである状況を「読み解き」、家庭で何かあった可能性があると判断しました。次に、どのように「意味づけ」し、対応しますか？",
+                    options: [
+                        { text: "Aさんの心の状態を尊重し、個別面談で話を聞く機会を設け、必要に応じて専門機関との連携も検討する。", isCorrect: true },
+                        { text: "Aさんに「元気出しなさい」と励ます。", isCorrect: false },
+                        { text: "Aさんのことは放っておくのが一番だと判断する。", isCorrect: false },
+                        { text: "Aさんの親にすぐに連絡し、状況を確認する。", isCorrect: false }
+                    ],
+                    feedback: "正解です！「意味づけ」は、その後の具体的な行動につながる重要なステップです。学生の状況を深く理解し、適切なサポートを検討する姿勢が素晴らしいです。"
+                },
+                {
+                    question: "Bさんがグループワークで積極的に発言する一方、Cさんがほとんど話していません。Cさんが話さないのは、自分の意見に自信がないためだと「読み解き」ました。どのように「意味づけ」し、対応しますか？",
+                    options: [
+                        { text: "Cさんの意見を引き出す質問や少人数での意見交換の場を設け、自信を持って発言できる機会を作る。", isCorrect: true },
+                        { text: "Cさんに「もっと発言しなさい」と促す。", isCorrect: false },
+                        { text: "Cさんにはグループワークは向いていないと判断する。", isCorrect: false },
+                        { text: "Cさんの代わりに他の学生に発言を促す。", isCorrect: false }
+                    ],
+                    feedback: "正解です！「意味づけ」では、学生の課題を成長の機会と捉え、具体的な支援策を講じることが重要です。自信を引き出すための働きかけは、非認知能力の向上にもつながります。"
+                },
+                {
+                    question: "Dさんが提出した課題の記述が、いつもより丁寧に書かれています。この変化に気づき、Dさんがその課題に強い関心を持っていると「読み解き」ました。どのように「意味づけ」し、対応しますか？",
+                    options: [
+                        { text: "Dさんの努力を具体的に褒め、さらに深く学べる発展的な課題や情報を提供し、学習意欲を高める。", isCorrect: true },
+                        { text: "Dさんに「よくやったね」と一言だけ伝える。", isCorrect: false },
+                        { text: "Dさんの課題は完璧なので、特に何もする必要はないと判断する。", isCorrect: false },
+                        { text: "他の学生にもDさんのように丁寧に書くように指導する。", isCorrect: false }
+                    ],
+                    feedback: "正解です！「意味づけ」では、学生のポジティブな変化を捉え、それをさらに伸ばすための具体的な働きかけが重要です。学習意欲の向上につながるフィードバックは素晴らしいです。"
+                },
+                {
+                    question: "Eさんが最近、休み時間に一人で過ごすことが増えたことに気づき、Eさんが新しい環境にまだ馴染めていないと「読み解き」ました。どのように「意味づけ」し、対応しますか？",
+                    options: [
+                        { text: "Eさんが安心して過ごせる居場所や、共通の趣味を持つ学生との交流機会を設けるなど、緩やかなサポートを検討する。", isCorrect: true },
+                        { text: "Eさんに積極的に友達を作るように促す。", isCorrect: false },
+                        { text: "Eさんが一人でいることを好むタイプだと決めつける。", isCorrect: false },
+                        { text: "Eさんのことはクラスメイトに任せる。", isCorrect: false }
+                    ],
+                    feedback: "正解です！「意味づけ」では、学生の状況に応じたきめ細やかなサポートが求められます。安心できる環境を提供し、自主性を尊重する姿勢が優れています。"
+                },
+                {
+                    question: "Fさんが授業中に頻繁に時計を見ていることに気づき、Fさんが次の授業の準備を気にしていると「読み解き」ました。どのように「意味づけ」し、対応しますか？",
+                    options: [
+                        { text: "Fさんの次の授業への意識の高さと捉え、授業の区切りや時間の使い方について、Fさんと個別に話し合い、アドバイスを与える。", isCorrect: true },
+                        { text: "Fさんに授業に集中するように注意する。", isCorrect: false },
+                        { text: "Fさんの行動は問題ないので、特に何も対応しない。", isCorrect: false },
+                        { text: "Fさんの次の授業の担当教員に連絡する。", isCorrect: false }
+                    ],
+                    feedback: "正解です！「意味づけ」では、学生の行動の背景にあるポジティブな側面を見出し、それを成長の機会と捉えることが重要です。時間管理能力の向上につながるアドバイスは素晴らしいです。"
+                }
+            ]
+        };
+
+        // 名言データ
+        const quotesData = [
+            {
+                category: "kizuki_high",
+                quote: "最も深い洞察は、最も繊細な観察から生まれる。",
+                source: "レオナルド・ダ・ヴィンチ（芸術家・科学者）"
+            },
+            {
+                category: "kizuki_low",
+                quote: "見ることは、ただ目を向けることではない。心で感じ、理解することだ。",
+                source: "ヘレン・ケラー（教育家・社会福祉活動家）"
+            },
+            {
+                category: "yomito_high",
+                quote: "真の教育とは、事実を学ぶことではなく、心を考えるように訓練することである。",
+                source: "アルベルト・アインシュタイン（物理学者）"
+            },
+            {
+                category: "yomito_low",
+                quote: "理解とは、表面的なものを見るのではなく、その奥にあるものを探ることである。",
+                source: "ソクラテス（哲学者）"
+            },
+            {
+                category: "imitsuke_high",
+                quote: "行動なくして、いかなる偉大な成果も得られない。",
+                source: "マハトマ・ガンディー（思想家・政治指導者）"
+            },
+            {
+                category: "imitsuke_low",
+                quote: "知識は力なり。しかし、それをどう使うかが重要である。",
+                source: "フランシス・ベーコン（哲学者）"
+            },
+            {
+                category: "balanced",
+                quote: "教育の目的は、生徒が自分自身を理解し、世界を理解し、そしてその世界に貢献する方法を見つけるのを助けることである。",
+                source: "ジョン・デューイ（哲学者・教育学者）"
+            },
+            {
+                category: "overall_high",
+                quote: "学び続ける限り、人は成長し続ける。",
+                source: "ピーター・ドラッカー（経営学者）"
+            },
+            {
+                category: "overall_low",
+                quote: "千里の道も一歩から。",
+                source: "老子（思想家）"
+            },
+            {
+                category: "default",
+                quote: "教育とは、人生のための準備ではなく、人生そのものである。",
+                source: "ジョン・デューイ（哲学者・教育学者）"
+            }
+        ];
+
+        let currentCategoryIndex = 0;
+        let currentQuestionIndex = 0;
+        let selectedOption = null;
+        let scores = {
+            kizuki: 0,
+            yomito: 0,
+            imitsuke: 0
+        };
+        const categories = ['kizuki', 'yomito', 'imitsuke'];
+
+        // DOM要素の取得
+        const startScreen = document.getElementById('startScreen');
+        const startButton = document.getElementById('startButton');
+        const quizContainer = document.getElementById('quizContainer');
+        const kizukiSection = document.getElementById('kizukiSection');
+        const yomitoSection = document.getElementById('yomitoSection');
+        const imitsukeSection = document.getElementById('imitsukeSection');
+        const kizukiQuestionElem = document.getElementById('kizukiQuestion');
+        const kizukiOptionsElem = document.getElementById('kizukiOptions');
+        const yomitoQuestionElem = document.getElementById('yomitoQuestion');
+        const yomitoOptionsElem = document.getElementById('yomitoOptions');
+        const imitsukeQuestionElem = document.getElementById('imitsukeQuestion');
+        const imitsukeOptionsElem = document.getElementById('imitsukeOptions');
+        const submitQuizButton = document.getElementById('submitQuiz');
+        const resultContainer = document.getElementById('resultContainer');
+        const kizukiScoreElem = document.getElementById('kizukiScore');
+        const yomitoScoreElem = document.getElementById('yomitoScore');
+        const imitsukeScoreElem = document.getElementById('imitsukeScore');
+        const overallScoreElem = document.getElementById('overallScore');
+        const kizukiFeedbackTextElem = document.getElementById('kizukiFeedbackText');
+        const yomitoFeedbackTextElem = document.getElementById('yomitoFeedbackText');
+        const imitsukeFeedbackTextElem = document.getElementById('imitsukeFeedbackText');
+        const overallFeedbackTextElem = document.getElementById('overallFeedbackText'); // 総評アドバイス要素
+        const displayQuoteElem = document.getElementById('displayQuote');
+        const quoteSourceElem = document.getElementById('quoteSource');
+        const restartButton = document.getElementById('restartButton');
+        const overallProgressBar = document.getElementById('overallProgressBar');
+        const questionProgressElem = document.getElementById('questionProgress'); // 進捗表示要素
+
+        const modal = document.getElementById('myModal');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalMessage = document.getElementById('modalMessage');
+        const modalCloseButton = document.getElementById('modalCloseButton');
+
+        // モーダルを表示する関数
+        function showModal(title, message) {
+            modalTitle.textContent = title;
+            modalMessage.textContent = message;
+            modal.style.display = 'flex'; // Flexboxを使って中央寄せ
+        }
+
+        // モーダルを閉じる関数
+        modalCloseButton.onclick = function() {
+            modal.style.display = 'none';
+        }
+
+        // モーダルの外側をクリックで閉じる
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // 配列をシャッフルする関数 (Fisher-Yatesアルゴリズム)
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // クイズの初期化
+        function initializeQuiz() {
+            currentCategoryIndex = 0;
+            currentQuestionIndex = 0;
+            scores = { kizuki: 0, yomito: 0, imitsuke: 0 };
+            startScreen.classList.add('hidden');
+            quizContainer.classList.remove('hidden');
+            resultContainer.classList.add('hidden');
+            submitQuizButton.classList.add('hidden');
+            loadQuestion();
+        }
+
+        // 問題をロードする
+        function loadQuestion() {
+            const currentCategory = categories[currentCategoryIndex];
+            const questions = quizData[currentCategory];
+            const questionData = questions[currentQuestionIndex];
+
+            // 全てのセクションを非表示にする
+            kizukiSection.classList.add('hidden');
+            yomitoSection.classList.add('hidden');
+            imitsukeSection.classList.add('hidden');
+
+            let questionElem, optionsElem;
+            let categoryName = "";
+
+            // 現在のカテゴリのセクションを表示し、問題と選択肢をセット
+            if (currentCategory === 'kizuki') {
+                kizukiSection.classList.remove('hidden');
+                questionElem = kizukiQuestionElem;
+                optionsElem = kizukiOptionsElem;
+                categoryName = "「気づき」の視点";
+            } else if (currentCategory === 'yomito') {
+                yomitoSection.classList.remove('hidden');
+                questionElem = yomitoQuestionElem;
+                optionsElem = yomitoOptionsElem;
+                categoryName = "「読み解き」の視点";
+            } else if (currentCategory === 'imitsuke') {
+                imitsukeSection.classList.remove('hidden');
+                questionElem = imitsukeQuestionElem;
+                optionsElem = imitsukeOptionsElem;
+                categoryName = "「意味づけ」の視点";
+            }
+
+            // 進捗表示を更新
+            questionProgressElem.textContent = `${categoryName} - ${currentQuestionIndex + 1} / ${questions.length} 問`;
+
+            questionElem.textContent = questionData.question;
+            optionsElem.innerHTML = ''; // 選択肢をクリア
+
+            // 選択肢をシャッフル
+            const shuffledOptions = shuffleArray([...questionData.options]);
+
+            shuffledOptions.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.classList.add('option-button');
+                button.textContent = option.text;
+                // シャッフル後のインデックスではなく、元のoptions配列でのisCorrect判定を直接使用
+                button.dataset.isCorrect = option.isCorrect; // isCorrectをデータ属性として保持
+                button.addEventListener('click', () => handleOptionSelection(button)); // isCorrectを引数から削除
+                optionsElem.appendChild(button);
+            });
+
+            selectedOption = null; // 選択肢をリセット
+            submitQuizButton.classList.add('hidden'); // 結果を見るボタンを非表示
+        }
+
+        // 選択肢を選択したときの処理 (自動遷移)
+        function handleOptionSelection(button) { // isCorrect引数を削除
+            // 既に選択されている選択肢があれば、selectedクラスを削除
+            if (selectedOption) {
+                selectedOption.classList.remove('selected');
+            }
+            // 新しく選択された選択肢にselectedクラスを追加
+            button.classList.add('selected');
+            selectedOption = button;
+
+            // スコアを計算
+            const currentCategory = categories[currentCategoryIndex];
+            // isCorrectをデータ属性から取得
+            const isCorrect = selectedOption.dataset.isCorrect === 'true';
+
+            if (isCorrect) {
+                scores[currentCategory]++;
+            }
+
+            // 短い遅延後に次の問題へ、または結果表示へ
+            setTimeout(() => {
+                currentQuestionIndex++;
+                if (currentQuestionIndex < quizData[currentCategory].length) { // quizData[currentCategory].lengthで現在のカテゴリの問題数を取得
+                    loadQuestion(); // 同じカテゴリの次の問題へ
+                } else {
+                    currentCategoryIndex++;
+                    currentQuestionIndex = 0; // 次のカテゴリの最初の問題へ
+                    if (currentCategoryIndex < categories.length) {
+                        loadQuestion();
+                    } else {
+                        // 全てのクイズが終了したら結果を表示
+                        displayResults();
+                    }
+                }
+            }, 500); // 0.5秒の遅延
+        }
+
+        // クイズを提出して結果を表示する処理 (最終問題のみ)
+        submitQuizButton.addEventListener('click', () => {
+            // このボタンは最後の問題でのみ表示されるため、選択済みであることを前提とする
+            displayResults();
+        });
+
+        // 結果を表示する
+        function displayResults() {
+            quizContainer.classList.add('hidden');
+            resultContainer.classList.remove('hidden');
+
+            const totalScore = scores.kizuki + scores.yomito + scores.imitsuke;
+
+            kizukiScoreElem.textContent = scores.kizuki;
+            yomitoScoreElem.textContent = scores.yomito;
+            imitsukeScoreElem.textContent = scores.imitsuke;
+            overallScoreElem.textContent = totalScore;
+
+            // プログレスバーの更新
+            const overallProgress = (totalScore / 15) * 100;
+            overallProgressBar.style.width = overallProgress + '%';
+            if (overallProgress < 50) {
+                overallProgressBar.style.backgroundColor = '#ffc107'; // Yellow for low score
+            } else if (overallProgress < 80) {
+                overallProgressBar.style.backgroundColor = '#28a745'; // Green for medium score
+            } else {
+                overallProgressBar.style.backgroundColor = '#007bff'; // Blue for high score
+            }
+
+            // フィードバックの生成
+            kizukiFeedbackTextElem.textContent = generateFeedback('kizuki', scores.kizuki);
+            yomitoFeedbackTextElem.textContent = generateFeedback('yomito', scores.yomito);
+            imitsukeFeedbackTextElem.textContent = generateFeedback('imitsuke', scores.imitsuke);
+            overallFeedbackTextElem.textContent = generateOverallFeedback(scores); // 総評アドバイスの生成
+
+            // 名言の表示
+            const { quote, source } = generateQuote(scores);
+            displayQuoteElem.textContent = `「${quote}」`;
+            quoteSourceElem.textContent = `— ${source}`;
+        }
+
+        // フィードバック生成関数
+        function generateFeedback(category, score) {
+            let feedback = "";
+            if (category === 'kizuki') {
+                if (score >= 4) {
+                    feedback = "素晴らしいです！あなたは学生の些細な変化や普段との違いによく気づくことができます。この高い「気づき」の力は、学生の非認知能力を伸ばす上で非常に重要です。さらに多角的な視点を持つことで、より深い気づきにつながるでしょう。";
+                } else if (score >= 2) {
+                    feedback = "良い「気づき」の力を持っています。学生の行動や表情の変化に意識を向けることで、さらに多くの「気づき」を得られるようになります。日々の観察を意識的に行うことで、見取りの解像度を高めましょう。";
+                } else {
+                    feedback = "「気づき」の力をさらに高める必要があります。学生の行動の背景にあるサインを見逃さないよう、日々の観察をより意識的に行いましょう。特に、普段と違う点や、些細な変化に目を向ける練習が効果的です。";
+                }
+            } else if (category === 'yomito') {
+                if (score >= 4) {
+                    feedback = "見事です！あなたは学生の行動の背景にある理由や原因を深く「読み解く」ことができます。多角的な視点から情報を統合し、本質を捉える力が優れています。この力を活かし、学生一人ひとりに寄り添った支援を続けてください。";
+                } else if (score >= 2) {
+                    feedback = "「読み解き」の力は良好です。学生の行動の背景を考える習慣はついていますが、さらに多角的な情報（過去のデータ、他の教員の意見など）を取り入れることで、より正確な「読み解き」が可能になります。仮説を立てて検証する練習も有効です。";
+                } else {
+                    feedback = "「読み解き」の力を向上させる余地があります。学生の行動に対して、安易に決めつけず、なぜそのような行動をとったのかを深く考える習慣をつけましょう。情報収集の幅を広げ、様々な可能性を検討することが重要です。";
+                }
+            } else if (category === 'imitsuke') {
+                if (score >= 4) {
+                    feedback = "素晴らしい「意味づけ」の力です！あなたは学生の行動や状況を、その後の具体的な支援や成長の機会へと適切に「意味づける」ことができます。あなたのフィードバックや働きかけは、学生の非認知能力の向上に大きく貢献するでしょう。";
+                } else if (score >= 2) {
+                    feedback = "「意味づけ」の力は十分です。学生の行動をポジティブに捉え、具体的な支援につなげようとする姿勢は素晴らしいです。さらに、長期的な視点や、非認知能力との関連性を意識することで、より戦略的な「意味づけ」が可能になります。";
+                } else {
+                    feedback = "「意味づけ」の力をさらに強化する必要があります。学生の行動を単なる問題として捉えるだけでなく、それをどのように成長の機会に変えるか、具体的な支援策としてどう落とし込むかを意識しましょう。非認知能力の観点から「意味づけ」を深める練習が効果的です。";
+                }
+            }
+            return feedback;
+        }
+
+        // 総評アドバイス生成関数
+        function generateOverallFeedback(scores) {
+            const totalScore = scores.kizuki + scores.yomito + scores.imitsuke;
+            let overallFeedback = "";
+
+            if (totalScore >= 12) {
+                overallFeedback = "あなたの見取り力は非常に高く、学生の些細な変化から深い内面までを捉え、適切な支援へと繋げることができています。この優れた能力を活かし、チーム全体の見取り力向上にも貢献できるでしょう。常に学び続け、さらに高みを目指してください。";
+            } else if (totalScore >= 8) {
+                overallFeedback = "あなたの見取り力は着実に育まれています。各視点でのバランスも良く、学生への丁寧な関わりができている証拠です。さらに特定の分野を深掘りしたり、多様な学生のケースに触れたりすることで、あなたの見取り力は一層磨かれるでしょう。";
+            } else if (totalScore >= 4) {
+                overallFeedback = "見取り力の基礎は備わっていますが、まだ伸びしろが多くあります。特に、学生の行動の背景を深く探る「読み解き」や、その情報を具体的な支援に繋げる「意味づけ」に意識を向けることで、より質の高い見取りができるようになります。日々の実践の中で、意識的に3つの視点を活用してみてください。";
+            } else {
+                overallFeedback = "見取り力を高めるための第一歩を踏み出しましたね。まずは、学生の行動や表情の「気づき」から始め、なぜそうなのかを「読み解き」、どう関わるべきかを「意味づける」という一連の流れを意識することが重要です。焦らず、一つずつ実践を重ねていきましょう。";
+            }
+            return overallFeedback;
+        }
+
+
+        // 名言生成関数
+        function generateQuote(scores) {
+            const totalScore = scores.kizuki + scores.yomito + scores.imitsuke;
+            let chosenQuote = null;
+
+            // スコア傾向に基づいて名言を選択
+            if (scores.kizuki >= 4 && scores.yomito >= 4 && scores.imitsuke >= 4) {
+                chosenQuote = quotesData.find(q => q.category === "overall_high");
+            } else if (totalScore <= 5) { // 総合スコアが低い場合
+                chosenQuote = quotesData.find(q => q.category === "overall_low");
+            } else if (scores.kizuki >= 4) {
+                chosenQuote = quotesData.find(q => q.category === "kizuki_high");
+            } else if (scores.kizuki <= 1) {
+                chosenQuote = quotesData.find(q => q.category === "kizuki_low");
+            } else if (scores.yomito >= 4) {
+                chosenQuote = quotesData.find(q => q.category === "yomito_high");
+            } else if (scores.yomito <= 1) {
+                chosenQuote = quotesData.find(q => q.category === "yomito_low");
+            } else if (scores.imitsuke >= 4) {
+                chosenQuote = quotesData.find(q => q.category === "imitsuke_high");
+            } else if (scores.imitsuke <= 1) {
+                chosenQuote = quotesData.find(q => q.category === "imitsuke_low");
+            } else {
+                chosenQuote = quotesData.find(q => q.category === "balanced");
+            }
+
+            // 適切な名言が見つからなければ、デフォルトを返す
+            return chosenQuote || quotesData.find(q => q.category === "default");
+        }
+
+        // 再スタートボタン
+        restartButton.addEventListener('click', () => {
+            resultContainer.classList.add('hidden');
+            startScreen.classList.remove('hidden');
+            // クイズの状態をリセット
+            currentCategoryIndex = 0;
+            currentQuestionIndex = 0;
+            scores = { kizuki: 0, yomito: 0, imitsuke: 0 };
+            selectedOption = null;
+        });
+
+        // 開始ボタンのイベントリスナー
+        startButton.addEventListener('click', initializeQuiz);
+
+        // ページロード時にスタート画面を表示
+        window.onload = function() {
+            startScreen.classList.remove('hidden');
+            quizContainer.classList.add('hidden');
+            resultContainer.classList.add('hidden');
+        };
+
+    </script>
+</body>
+</html>
